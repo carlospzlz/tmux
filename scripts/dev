@@ -1,6 +1,5 @@
 #!/bin/env bash
 
-
 DEV_DIR="$HOME/dev"
 SRC_DIR="src"
 TESTS_DIR="tests"
