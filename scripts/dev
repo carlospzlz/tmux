@@ -1,0 +1,58 @@
+#!/bin/env bash
+
+
+DEV_DIR="~/dev"
+
+
+function initTmux {
+	tmux new-session -s $1 -n console -d
+	tmux send-keys -t $1 "cd ~/dev/$1" C-m
+}
+
+function setStatus {
+	tmux set -t $1 status-fg colour232
+	tmux set -t $1 status-attr bold
+	tmux set -t $1 status-left-length 40
+	tmux set -t $1 status-left "#(whoami)@#H [#S] "
+	tmux set -t $1 window-status-current-bg magenta
+	tmux set-window-option -t $1 monitor-activity on
+	tmux set -t $1 visual-activity on
+}
+
+function setBindings {
+	tmux bind-key -g
+}
+
+function setWindows {
+	tmux new-window -n git -t $1
+	tmux split-window -h -t $1:1
+	tmux split-window -v -t $1:1.0
+	tmux send-keys -t $1:1.0 "cd $DEV_DIR/$1" C-m
+	tmux send-keys -t $1:1.0 "git checkout develop" C-m
+	tmux send-keys -t $1:1.0 "clear" C-m
+	tmux send-keys -t $1:1.0 "git show-branch" C-m
+	tmux send-keys -t $1:1.1 "cd $DEV_DIR/$1" C-m
+	tmux send-keys -t $1:1.1 "tig --all" C-m
+	tmux send-keys -t $1:1.2 "cd $DEV_DIR/$1" C-m
+	tmux send-keys -t $1:1.2 "clear" C-m
+	tmux new-window -n editor -t $1
+	tmux new-window -n deploy -t $1
+	tmux new-window -n test -t $1
+	tmux select-window -t $1:0
+}
+
+if [[ $# = 0 ]]
+then
+	echo "project?"
+	exit
+fi
+
+tmux info &> /dev/null && tmux has-session -t $1
+if [ $? != 0 ]
+then
+	initTmux $1
+	setStatus $1
+	setWindows $1
+fi
+
+tmux attach -t $1
