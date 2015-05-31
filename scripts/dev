@@ -9,20 +9,6 @@ function initTmux {
 	tmux send-keys -t $1 "cd ~/dev/$1" C-m
 }
 
-function setStatus {
-	tmux set -t $1 status-fg colour232
-	tmux set -t $1 status-attr bold
-	tmux set -t $1 status-left-length 40
-	tmux set -t $1 status-left "#(whoami)@#H [#S] "
-	tmux set -t $1 window-status-current-bg magenta
-	tmux set-window-option -t $1 monitor-activity on
-	tmux set -t $1 visual-activity on
-}
-
-function setBindings {
-	tmux bind-key -g
-}
-
 function setWindows {
 	tmux new-window -n git -t $1
 	tmux split-window -h -t $1:1
@@ -51,7 +37,6 @@ tmux info &> /dev/null && tmux has-session -t $1
 if [ $? != 0 ]
 then
 	initTmux $1
-	setStatus $1
 	setWindows $1
 fi
 
