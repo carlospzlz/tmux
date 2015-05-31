@@ -26,7 +26,7 @@ function setWindows {
 	tmux send-keys -t $1:2 "cd $DEV_DIR/$1/src" C-m
 	tmux send-keys -t $1:2 "clear" C-m
 	tmux new-window -n deploy -t $1
-	tmux send-keys -t $1:2 "cd $DEV_DIR/$1" C-m
+	tmux send-keys -t $1:3 "cd $DEV_DIR/$1" C-m
 	tmux send-keys -t $1:3 "clear" C-m
 	tmux new-window -n test -t $1
 	tmux send-keys -t $1:4 "cd $DEV_DIR/$1/tests" C-m
