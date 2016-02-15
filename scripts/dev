@@ -7,7 +7,7 @@ TESTS_DIR="tests"
 
 function initTmux {
 	tmux new-session -s $1 -n console -d
-	tmux send-keys -t $1 "cd ~/dev/$1" C-m
+	tmux send-keys -t $1 "cd $DEV_DIR/$1" C-m
 	tmux send-keys -t $1 "clear" C-m
 }
 
