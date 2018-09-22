@@ -29,7 +29,7 @@ function setWindows {
     tmux send-keys -t $SESSION_NAME:1.2 "clear" C-m
     # Editor window
     tmux new-window -n edit -t $SESSION_NAME
-    tmux send-keys -t $SESSION_NAME:2 "cd $PSXLE_SRC_DIR/src" C-m
+    tmux send-keys -t $SESSION_NAME:2 "cd $PSXLE_SRC_DIR" C-m
     tmux send-keys -t $SESSION_NAME:2 "clear" C-m
     # pcsxr core window
     tmux new-window -n core -t $SESSION_NAME
