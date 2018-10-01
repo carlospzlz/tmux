@@ -2,11 +2,10 @@
 
 SESSION_NAME="psxle"
 PSXLE_DIR="$1/psxle"
-PCSXR_DIR="$1/PCSX-Reloaded/pcsxr"
 PSXLE_SRC_DIR="$PSXLE_DIR/src"
-PCSXR_CORE_DIR="$PCSXR_DIR/libpcsxcore"
-PCSXR_PLUGINS_DIR="$PCSXR_DIR/plugins"
-PCSXR_GUI_DIR="$PCSXR_DIR/gui"
+PSXLE_CORE_DIR="$PSXLE_DIR/libpcsxcore"
+PSXLE_PLUGINS_DIR="$PSXLE_DIR/plugins"
+PSXLE_GUI_DIR="$PSXLE_DIR/gui"
 
 function initTmux {
     tmux new-session -s $SESSION_NAME -n console -d
@@ -17,33 +16,21 @@ function initTmux {
 function setWindows {
     # Vcs (git) window
     tmux new-window -n git -t $SESSION_NAME
-    tmux split-window -h -t $SESSION_NAME:1
-    tmux split-window -v -t $SESSION_NAME:1.0
-    tmux send-keys -t $SESSION_NAME:1.0 "cd $PSXLE_DIR" C-m
-    tmux send-keys -t $SESSION_NAME:1.0 "git checkout develop" C-m
-    tmux send-keys -t $SESSION_NAME:1.0 "clear" C-m
-    tmux send-keys -t $SESSION_NAME:1.0 "git show-branch" C-m
-    tmux send-keys -t $SESSION_NAME:1.1 "cd $PSXLE_DIR" C-m
-    tmux send-keys -t $SESSION_NAME:1.1 "tig --all" C-m
-    tmux send-keys -t $SESSION_NAME:1.2 "cd $PSXLE_DIR" C-m
-    tmux send-keys -t $SESSION_NAME:1.2 "clear" C-m
+    tmux send-keys -t $SESSION_NAME:1 "cd $PSXLE_DIR" C-m
+    tmux send-keys -t $SESSION_NAME:1 "clear" C-m
     # Editor window
     tmux new-window -n edit -t $SESSION_NAME
     tmux send-keys -t $SESSION_NAME:2 "cd $PSXLE_SRC_DIR" C-m
     tmux send-keys -t $SESSION_NAME:2 "clear" C-m
     # pcsxr core window
     tmux new-window -n core -t $SESSION_NAME
-    tmux send-keys -t $SESSION_NAME:3 "cd $PCSXR_CORE_DIR" C-m
+    tmux send-keys -t $SESSION_NAME:3 "cd $PSXLE_CORE_DIR" C-m
     tmux send-keys -t $SESSION_NAME:3 "clear" C-m
     # pcsxr plugins window
     tmux new-window -n plugins -t $SESSION_NAME
-    tmux send-keys -t $SESSION_NAME:4 "cd $PCSXR_PLUGINS_DIR" C-m
+    tmux send-keys -t $SESSION_NAME:4 "cd $PSXLE_PLUGINS_DIR" C-m
     tmux send-keys -t $SESSION_NAME:4 "clear" C-m
-    # pcsxr gui window
-    tmux new-window -n gui -t $SESSION_NAME
-    tmux send-keys -t $SESSION_NAME:5 "cd $PCSXR_GUI_DIR" C-m
-    tmux send-keys -t $SESSION_NAME:5 "clear" C-m
-    # Go to console
+   # Go to console
     tmux select-window -t $SESSION_NAME:0
 }
 
