@@ -23,7 +23,7 @@ function setWindows {
     tmux send-keys -t $1:2 "clear" C-m
     # Build window
     tmux new-window -n build -t $1
-    tmux send-keys -t $1:3 "cd $2/$KATANA_OBJECTS" C-m
+    tmux send-keys -t $1:3 "cd $2" C-m
     tmux send-keys -t $1:3 "clear" C-m
     # Run window
     tmux new-window -n run -t $1
@@ -35,22 +35,25 @@ function setWindows {
 
 if [[ $# = 0 ]]
 then
-    echo "katana checkout?"
-    exit
+    directory="."
+else
+    directory=$1
 fi
 
-if [[ ! -d $1 ]]
+directory=`realpath $directory`
+
+if [[ ! -d $directory ]]
 then
-    echo $1?
+    echo $directory?
     exit
 fi
 
-session=`basename $1 | tr . _`
-tmux info &> /dev/null && tmux has-session -t $session
+session=`basename $directory | tr . _`
+tmux has-session -t $session
 if [ $? != 0 ]
 then
-    initTmux $session $1
-    setWindows $session $1
+    initTmux $session $directory
+    setWindows $session $directory
 fi
 
 tmux attach -t $session
