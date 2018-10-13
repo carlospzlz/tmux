@@ -6,6 +6,8 @@ PSXLE_SRC_DIR="$PSXLE_DIR/src"
 PSXLE_CORE_DIR="$PSXLE_DIR/libpcsxcore"
 PSXLE_PLUGINS_DIR="$PSXLE_DIR/plugins"
 PSXLE_GUI_DIR="$PSXLE_DIR/gui"
+ALE_PYTHON_INTERFACE="$1/Arcade-Learning-Environment/ale_python_interface/ale_python_interface.py"
+PSXLE_PYTHON_INTERFACE="$1/psxle/psxle_python_interface/psxle_python_interface.py"
 
 function initTmux {
     tmux new-session -s $SESSION_NAME -n console -d
@@ -19,18 +21,14 @@ function setWindows {
     tmux send-keys -t $SESSION_NAME:1 "cd $PSXLE_DIR" C-m
     tmux send-keys -t $SESSION_NAME:1 "clear" C-m
     # Editor window
-    tmux new-window -n edit -t $SESSION_NAME
-    tmux send-keys -t $SESSION_NAME:2 "cd $PSXLE_SRC_DIR" C-m
+    #tmux new-window -n edit -t $SESSION_NAME
+    #tmux send-keys -t $SESSION_NAME:2 "cd $PSXLE_SRC_DIR" C-m
+    #tmux send-keys -t $SESSION_NAME:2 "clear" C-m
+    # Python interface window
+    tmux new-window -n python_interface -t $SESSION_NAME
     tmux send-keys -t $SESSION_NAME:2 "clear" C-m
-    # pcsxr core window
-    tmux new-window -n core -t $SESSION_NAME
-    tmux send-keys -t $SESSION_NAME:3 "cd $PSXLE_CORE_DIR" C-m
-    tmux send-keys -t $SESSION_NAME:3 "clear" C-m
-    # pcsxr plugins window
-    tmux new-window -n plugins -t $SESSION_NAME
-    tmux send-keys -t $SESSION_NAME:4 "cd $PSXLE_PLUGINS_DIR" C-m
-    tmux send-keys -t $SESSION_NAME:4 "clear" C-m
-   # Go to console
+    tmux send-keys -t $SESSION_NAME:2 "vim -O $ALE_PYTHON_INTERFACE $PSXLE_PYTHON_INTERFACE" C-m
+    # Go to console
     tmux select-window -t $SESSION_NAME:0
 }
 
